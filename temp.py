@@ -9,3 +9,4 @@ class item():
     def __str__(self):
 
         strin = "The item {} is at location '{}' .".format(self.sr_no,self.location)
+        return strin
