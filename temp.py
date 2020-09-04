@@ -10,3 +10,5 @@ class item():
 
         strin = "The item {} is at location '{}' .".format(self.sr_no,self.location)
         return strin
+
+        
