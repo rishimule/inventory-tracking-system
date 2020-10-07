@@ -19,6 +19,11 @@ cd inventory-tracking-system
 python frontend.py
 ```
 
+## Preview
+
+<img src="https://github.com/radonintro1234/inventory-tracking-system/blob/master/ScreenShots/1.png?raw=true">
+
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
