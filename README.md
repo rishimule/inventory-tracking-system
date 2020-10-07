@@ -21,7 +21,7 @@ python frontend.py
 
 ## Preview
 
-<img src="https://github.com/radonintro1234/inventory-tracking-system/blob/master/ScreenShots/1.png?raw=true">
+<img src="https://raw.githubusercontent.com/radonintro1234/inventory-tracking-system/master/ScreenShots/1.png?token=ALKZSNFROUBITVEWYLVNINS7PVKBO">
 
 
 ## Contributing
