@@ -4,7 +4,7 @@ Inventory Tracking System is a Web Development project made specifically for org
 
 ## Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install inventory-tracking-system.
+Use the package manager [git](https://git-scm.com/) to install inventory-tracking-system.
 
 ```bash
 git clone https://github.com/radonintro1234/inventory-tracking-system.git
