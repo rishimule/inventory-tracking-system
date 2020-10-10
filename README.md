@@ -7,7 +7,7 @@ Inventory Tracking System is a Web Development project made specifically for org
 Use the package manager [git](https://git-scm.com/) to install inventory-tracking-system.
 
 ```bash
-git clone https://github.com/radonintro1234/inventory-tracking-system.git
+$ git clone https://github.com/radonintro1234/inventory-tracking-system.git
 ```
 
 ## Usage
@@ -15,8 +15,8 @@ git clone https://github.com/radonintro1234/inventory-tracking-system.git
 Open Terminal and run :
 
 ```bash
-cd inventory-tracking-system
-python frontend.py
+$ cd inventory-tracking-system
+$ python frontend.py
 ```
 
 ## Preview
