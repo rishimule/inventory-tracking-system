@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-__version__ = "0.1.0"
+__version__ = "0.1.0 for Windows 10"
 __author__  = "Radon Gas"
 __license__ = 'MIT'
 __copyright__ = 'Copyright (c) 2020 Radon Gas (radonintro1234)'
@@ -16,14 +16,14 @@ License : MIT
 Copyright (c) 2020 Radon Gas (radonintro1234)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the
-Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, 
+Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
 and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR
-ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
+ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
 THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 """
@@ -70,8 +70,8 @@ class Inventory():
 
 
 
-        head_title = Label(self.root,text="Inventory Management System",bd=10, relief=GROOVE, font=("ariel", 30 , "bold"), bg="RED", fg="white")
-        head_title.pack(side="top", pady=10, padx=10, fill=X)
+        head_title = Label(self.root,text="Inventory Management System",bd=10, relief=GROOVE, font=("ariel", 20 , "bold"), bg="RED", fg="white")
+        head_title.pack(side="top", pady=20, padx=10, fill=X)
 
         #===================================================================================================================================
         #===============================MANAGE_FRAME========================================================================================
@@ -97,74 +97,74 @@ class Inventory():
 
         #------------------------------------------------------------------------------------------------------------------------------------
 
-        lbl_product_id=Label(Manage_Frame,text="Product ID : ", font=("", 15 , "bold"), bg="crimson", fg="white")
+        lbl_product_id=Label(Manage_Frame,text="Product ID : ", font=("", 10 , "bold"), bg="crimson", fg="white")
         lbl_product_id.grid(row=1, column=0, padx=10, pady=10,sticky ="w")
 
-        txt_product_id=Entry(Manage_Frame, font=("times new roman", 15 , "bold") ,bd=2, relief=GROOVE, textvariable=self.product_id_var)
+        txt_product_id=Entry(Manage_Frame, font=("times new roman", 13 , "bold") ,bd=2, relief=GROOVE, textvariable=self.product_id_var)
         txt_product_id.bind("<KeyRelease>", caps)
         txt_product_id.grid(row=1, column=1, padx=10, pady=10, sticky ="w")
 
         #------------------------------------------------------------------------------------------------------------------------------------
 
-        lbl_type=Label(Manage_Frame,text="Product Type : ", font=("", 15 , "bold"), bg="crimson", fg="white")
+        lbl_type=Label(Manage_Frame,text="Product Type : ", font=("", 10 , "bold"), bg="crimson", fg="white")
         lbl_type.grid(row=2, column=0, padx=10, pady=10,sticky ="w")
 
-        txt_type=Entry(Manage_Frame, font=("times new roman", 15 , "bold") ,bd=2, relief=GROOVE, textvariable=self.product_type_var)
+        txt_type=Entry(Manage_Frame, font=("times new roman", 13 , "bold") ,bd=2, relief=GROOVE, textvariable=self.product_type_var)
         txt_type.bind("<KeyRelease>", caps)
         txt_type.grid(row=2, column=1, padx=10, pady=10, sticky ="w")
 
         #------------------------------------------------------------------------------------------------------------------------------------
 
-        lbl_model_no=Label(Manage_Frame,text="Model No : ", font=("", 15 , "bold"), bg="crimson", fg="white")
+        lbl_model_no=Label(Manage_Frame,text="Model No : ", font=("", 10 , "bold"), bg="crimson", fg="white")
         lbl_model_no.grid(row=3, column=0, padx=10, pady=10,sticky ="w")
 
-        txt_model_id=Entry(Manage_Frame, font=("times new roman", 15 , "bold") ,bd=2, relief=GROOVE, textvariable=self.model_no_var)
+        txt_model_id=Entry(Manage_Frame, font=("times new roman", 13 , "bold") ,bd=2, relief=GROOVE, textvariable=self.model_no_var)
         txt_model_id.bind("<KeyRelease>", caps)
         txt_model_id.grid(row=3, column=1, padx=10, pady=10, sticky ="w")
 
         #------------------------------------------------------------------------------------------------------------------------------------
 
-        lbl_manufacturer=Label(Manage_Frame,text="Manufacturer : ", font=("", 15 , "bold"), bg="crimson", fg="white")
+        lbl_manufacturer=Label(Manage_Frame,text="Manufacturer : ", font=("", 10 , "bold"), bg="crimson", fg="white")
         lbl_manufacturer.grid(row=4, column=0, padx=10, pady=10,sticky ="w")
 
-        txt_manufacturer=Entry(Manage_Frame, font=("times new roman", 15 , "bold") ,bd=2, relief=GROOVE, textvariable=self.manufacturer_var)
+        txt_manufacturer=Entry(Manage_Frame, font=("times new roman", 13 , "bold") ,bd=2, relief=GROOVE, textvariable=self.manufacturer_var)
         txt_manufacturer.bind("<KeyRelease>", caps)
         txt_manufacturer.grid(row=4, column=1, padx=10, pady=10, sticky ="w")
 
         #------------------------------------------------------------------------------------------------------------------------------------
 
-        lbl_department=Label(Manage_Frame,text="Department : ", font=("", 15 , "bold"), bg="crimson", fg="white")
+        lbl_department=Label(Manage_Frame,text="Department : ", font=("", 10 , "bold"), bg="crimson", fg="white")
         lbl_department.grid(row=5, column=0, padx=10, pady=10,sticky ="w")
 
-        combo_department=ttk.Combobox(Manage_Frame, width=15, font=("", 15, "" ), state="readonly", textvariable=self.department_var)
+        combo_department=ttk.Combobox(Manage_Frame, width=18, font=("", 13, "bold" ), state="readonly" , textvariable=self.department_var)
         combo_department["values"]=("COMPUTER","ELECTRICAL","CIVIL","MECHANICAL","CHEMICAL","I.T.")
         combo_department.current(0)
         combo_department.grid(row=5, column=1, padx=10, pady=10,sticky ="w")
 
         #------------------------------------------------------------------------------------------------------------------------------------
 
-        lbl_location=Label(Manage_Frame,text="Location : ", font=("", 15 , "bold"), bg="crimson", fg="white")
+        lbl_location=Label(Manage_Frame,text="Location : ", font=("", 10 , "bold"), bg="crimson", fg="white")
         lbl_location.grid(row=6, column=0, padx=10, pady=10,sticky ="w")
 
-        txt_location=Entry(Manage_Frame, font=("times new roman", 15 , "bold") ,bd=2, relief=GROOVE, textvariable=self.location_var)
+        txt_location=Entry(Manage_Frame, font=("times new roman", 13 , "bold") ,bd=2, relief=GROOVE, textvariable=self.location_var)
         txt_location.bind("<KeyRelease>", caps)
         txt_location.grid(row=6, column=1, padx=10, pady=10, sticky ="w")
 
         #------------------------------------------------------------------------------------------------------------------------------------
 
-        lbl_incharge=Label(Manage_Frame,text="Incharge : ", font=("", 15 , "bold"), bg="crimson", fg="white")
+        lbl_incharge=Label(Manage_Frame,text="Incharge : ", font=("", 10 , "bold"), bg="crimson", fg="white")
         lbl_incharge.grid(row=7, column=0, padx=10, pady=10,sticky ="w")
 
-        txt_incharge=Entry(Manage_Frame, font=("times new roman", 15 , "bold") ,bd=2, relief=GROOVE, textvariable=self.incharge_var)
+        txt_incharge=Entry(Manage_Frame, font=("times new roman", 13 , "bold") ,bd=2, relief=GROOVE, textvariable=self.incharge_var)
         txt_incharge.bind("<KeyRelease>", caps)
         txt_incharge.grid(row=7, column=1, padx=10, pady=10, sticky ="w")
 
         #------------------------------------------------------------------------------------------------------------------------------------
 
-        lbl_comment=Label(Manage_Frame,text="Comment : ", font=("", 15 , "bold"), bg="crimson", fg="white")
+        lbl_comment=Label(Manage_Frame,text="Comment : ", font=("", 10 , "bold"), bg="crimson", fg="white")
         lbl_comment.grid(row=8, column=0, padx=10, pady=10,sticky ="w")
 
-        self.txt_comment=Text(Manage_Frame, width=20, height=3, bd=2, relief=GROOVE, font=("times new roman", 15 , ""))
+        self.txt_comment=Text(Manage_Frame, width=20, height=3, bd=2, relief=GROOVE, font=("times new roman", 13 , ""))
         self.txt_comment.grid(row=8, column=1, padx=10, pady=10, sticky ="w")
 
         #------------------------------------------------------------------------------------------------------------------------------------
@@ -180,20 +180,20 @@ class Inventory():
         Button_Frame.place(x=5, y=500, width=330, height=50)
 
         #------------------------------------------------------------------------------------------------------------------------------------
-        add_button=Button(Button_Frame, text="Add", width=5, highlightbackground="yellow", command=self.add_items)
-        add_button.grid(row=0, column=0, padx=0, pady=7)
+        add_button=Button(Button_Frame, text="Add", width=8, highlightbackground="yellow", command=self.add_items)
+        add_button.grid(row=0, column=0, padx=5, pady=7)
 
         #------------------------------------------------------------------------------------------------------------------------------------
-        update_button=Button(Button_Frame, text="Update", width=5, highlightbackground="yellow", command=self.update_data)
-        update_button.grid(row=0, column=1, padx=0, pady=7)
+        update_button=Button(Button_Frame, text="Update", width=8, highlightbackground="yellow", command=self.update_data)
+        update_button.grid(row=0, column=1, padx=5, pady=7)
 
         #------------------------------------------------------------------------------------------------------------------------------------
-        delete_button=Button(Button_Frame, text="Delete", width=5, highlightbackground="yellow", command=self.delete_data)
-        delete_button.grid(row=0, column=2, padx=0, pady=7)
+        delete_button=Button(Button_Frame, text="Delete", width=8, highlightbackground="yellow", command=self.delete_data)
+        delete_button.grid(row=0, column=2, padx=5, pady=7)
 
         #------------------------------------------------------------------------------------------------------------------------------------
-        clear_button=Button(Button_Frame, text="Clear", width=5, highlightbackground="yellow", command=self.clear)
-        clear_button.grid(row=0, column=3, padx=0, pady=7)
+        clear_button=Button(Button_Frame, text="Clear", width=10, highlightbackground="yellow", command=self.clear)
+        clear_button.grid(row=0, column=3, padx=5, pady=7)
 
 
 
@@ -212,25 +212,25 @@ class Inventory():
         Search_Frame=Frame(Detail_Frame, bd=4, relief=RIDGE, bg="yellow")
         Search_Frame.place(x=10, y=10, width=792, height=60)
 
-        lbl_search=Label(Search_Frame,text="Search By : ", font=("", 15 , "bold"), bg="yellow", fg="red")
+        lbl_search=Label(Search_Frame,text="Search By : ", font=("", 13 , "bold"), bg="yellow", fg="red")
         lbl_search.grid(row=0, column=0, padx=10, pady=10,sticky ="w")
 
-        combo_search_by=ttk.Combobox(Search_Frame, width=10, font=("", 15, "" ), state="readonly", textvariable=self.search_by_var)
-        combo_search_by["values"]=("ALL","Product ID.","Product Type","Model No","Manufacturer","Department","Location","Incharge")
+        combo_search_by=ttk.Combobox(Search_Frame, width=13, font=("", 13, "" ), state="readonly", textvariable=self.search_by_var)
+        combo_search_by["values"]=("All","Product ID.","Product Type","Model No","Manufacturer","Department","Location","Incharge")
         combo_search_by.current(0)
         combo_search_by.grid(row=0, column=1, padx=2, pady=10,sticky ="w")
 
 
 
-        txt_search=Entry(Search_Frame, width=35,font=("times new roman", 15 ) ,bd=2, relief=GROOVE, textvariable=self.search_txt_var)
+        txt_search=Entry(Search_Frame, width=30,font=("times new roman", 15 ) ,bd=2, relief=GROOVE, textvariable=self.search_txt_var)
         txt_search.bind("<KeyRelease>", caps)
         txt_search.grid(row=0, column=2, padx=20, pady=10, sticky ="w")
 
-        search_button=Button(Search_Frame, text="Search", width=5, highlightbackground="yellow", command=self.search_data)
-        search_button.grid(row=0, column=3, padx=5, pady=5)
+        search_button=Button(Search_Frame, text="Search", width=8, highlightbackground="yellow", command=self.search_data)
+        search_button.grid(row=0, column=3, padx=4, pady=5)
 
         view_button=Button(Search_Frame, text="View All", width=8, highlightbackground="yellow", command=self.view_data)
-        view_button.grid(row=0, column=4, padx=6, pady=5)
+        view_button.grid(row=0, column=4, padx=9, pady=5)
 
         #===================================================================================================================================
         #==========================TABLE_FRAME=============================================================================================
@@ -455,8 +455,10 @@ class Inventory():
 
 if __name__ == '__main__':
     """START THE PROGRAM"""
-    
+
     create_database()
     root = Tk()
+    root.title("Inventory Tracking System")
+    root.iconbitmap("its_icon.ico")
     ob = Inventory(root)
     root.mainloop()
