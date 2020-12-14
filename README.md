@@ -16,7 +16,7 @@ Open Terminal and run :
 
 ```bash
 $ cd inventory-tracking-system
-$ python frontend.py
+$ python Windows_Version.py
 ```
 
 ## Preview

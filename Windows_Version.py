@@ -2,36 +2,13 @@
 # -*- coding: utf-8 -*-
 
 __version__ = "0.1.0 for Windows 10"
-__author__  = "Radon Gas"
+__author__  = "Rishi Mule, Shubham Mulik, Gaurav Gend, Vedant Padwal"
 __license__ = 'MIT'
-__copyright__ = 'Copyright (c) 2020 Radon Gas (radonintro1234)'
-
-"""
-
-Author  : Radon Gas (radonintro1234)
-Github  : https://github.com/radonintro1234
-License : MIT
-
-
-Copyright (c) 2020 Radon Gas (radonintro1234)
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the
-Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
-and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR
-ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
-THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-"""
-
 
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
+from dbToCSV import toCSV
 import pymysql
 import sqlite3
 
@@ -52,8 +29,8 @@ class Inventory():
         """Default __INIT__ Function"""
 
         self.root=root
-        self.root.title("I.T.S")
-        self.root.geometry("1200x660+30+0")
+        self.root.title("I.T.S - For Datta Meghe College Of Engineering")
+        self.root.geometry("1200x660+160+80")
         self.root.resizable(0, 0)
 
         self.product_id_var = StringVar()
@@ -70,7 +47,7 @@ class Inventory():
 
 
 
-        head_title = Label(self.root,text="Inventory Management System",bd=10, relief=GROOVE, font=("ariel", 20 , "bold"), bg="RED", fg="white")
+        head_title = Label(self.root,text="Inventory Tracking System",bd=10, relief=GROOVE, font=("ariel", 20 , "bold"), bg="RED", fg="white")
         head_title.pack(side="top", pady=20, padx=10, fill=X)
 
         #===================================================================================================================================
@@ -222,7 +199,7 @@ class Inventory():
 
 
 
-        txt_search=Entry(Search_Frame, width=30,font=("times new roman", 15 ) ,bd=2, relief=GROOVE, textvariable=self.search_txt_var)
+        txt_search=Entry(Search_Frame, width=22,font=("times new roman", 15 ) ,bd=2, relief=GROOVE, textvariable=self.search_txt_var)
         txt_search.bind("<KeyRelease>", caps)
         txt_search.grid(row=0, column=2, padx=20, pady=10, sticky ="w")
 
@@ -231,6 +208,9 @@ class Inventory():
 
         view_button=Button(Search_Frame, text="View All", width=8, highlightbackground="yellow", command=self.view_data)
         view_button.grid(row=0, column=4, padx=9, pady=5)
+
+        tocsv_button=Button(Search_Frame, text="Export", width=8, highlightbackground="yellow", command=toCSV)
+        tocsv_button.grid(row=0, column=5, padx=9, pady=5)
 
         #===================================================================================================================================
         #==========================TABLE_FRAME=============================================================================================
@@ -312,6 +292,7 @@ class Inventory():
     def view_data(self):
         """Function to VIEW data into Table"""
 
+        self.search_txt_var.set("")
         con=sqlite3.connect('inventory.db')
         cur=con.cursor()
         cur.execute("select * from dmce_inventory")
