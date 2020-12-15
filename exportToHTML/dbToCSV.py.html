@@ -1,0 +1,36 @@
+<html>
+<head>
+<title>dbToCSV.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #000080; font-weight: bold;}
+.s1 { color: #000000;}
+.s2 { color: #808080; font-style: italic;}
+.s3 { color: #008080; font-weight: bold;}
+</style>
+</head>
+<body bgcolor="#ffffff">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+dbToCSV.py</font>
+</center></td></tr></table>
+<pre><span class="s0">import </span>sqlite3
+<span class="s0">import </span>pandas <span class="s0">as </span>pd
+<span class="s0">from </span>tkinter <span class="s0">import </span>messagebox
+
+<span class="s0">def </span>toCSV():
+    <span class="s2">&quot;&quot;&quot;&quot;Export to database.csv&quot;&quot;&quot;</span>
+    <span class="s0">try</span>:
+        conn = sqlite3.connect(<span class="s3">'inventory.db'</span>, isolation_level=<span class="s0">None</span>, detect_types=sqlite3.PARSE_COLNAMES)
+        db_df = pd.read_sql_query(<span class="s3">&quot;SELECT * FROM dmce_inventory&quot;</span>, conn)
+        db_df.to_csv(<span class="s3">'database.csv'</span>, index=<span class="s0">False</span>)
+        messagebox.showinfo(<span class="s3">&quot;Success&quot;</span>,<span class="s3">&quot;Data Successfully Exported to 'Database.csv' !!!&quot;</span>)
+    <span class="s0">except</span>:
+        messagebox.showerror(<span class="s3">&quot;Error&quot;</span>,<span class="s3">&quot;Close other programs and try again.&quot;</span>)
+
+<span class="s0">if </span>__name__ == <span class="s3">'__main__'</span>:
+    toCSV()
+</pre>
+</body>
+</html>

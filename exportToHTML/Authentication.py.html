@@ -1,0 +1,100 @@
+<html>
+<head>
+<title>Authentication.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #000000;}
+.s1 { color: #000080; font-weight: bold;}
+.s2 { color: #008080; font-weight: bold;}
+.s3 { color: #0000ff;}
+.s4 { color: #808080; font-style: italic;}
+</style>
+</head>
+<body bgcolor="#ffffff">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Authentication.py</font>
+</center></td></tr></table>
+<pre>
+<span class="s1">from </span>tkinter <span class="s1">import </span>*
+<span class="s1">from </span>tkinter <span class="s1">import </span>ttk
+<span class="s1">import  </span>tkinter.messagebox
+<span class="s1">from </span>Windows_Version <span class="s1">import </span>*
+<span class="s1">from </span>tkinter <span class="s1">import </span>messagebox
+
+<span class="s1">class </span>Authentication:
+    user = <span class="s2">'admin'</span>
+    passw = <span class="s2">'admin'</span>
+
+    <span class="s1">def </span>__init__(self,root):
+
+        self.root = root
+        self.root.iconbitmap(<span class="s2">&quot;its_icon.ico&quot;</span>)
+        self.root.geometry(<span class="s2">'1200x660+160+80'</span>)
+        self.root.title(<span class="s2">'  Admin-Authetication '</span>)
+        self.root.resizable(<span class="s3">0</span>, <span class="s3">0</span>)
+
+        <span class="s2">'''Make Window 10X10'''</span>
+
+        rows = <span class="s3">0</span>
+        <span class="s1">while </span>rows&lt;<span class="s3">10</span>:
+            self.root.rowconfigure(rows, weight=<span class="s3">1</span>)
+            self.root.columnconfigure(rows, weight=<span class="s3">1</span>)
+            rows+=<span class="s3">1</span>
+
+        <span class="s2">'''Username and Password'''</span>
+
+        frame = LabelFrame(self.root, text=<span class="s2">'Login'</span>)
+        frame.grid(row = <span class="s3">1</span>,column = <span class="s3">1</span>,columnspan=<span class="s3">9</span>,rowspan=<span class="s3">9</span>)
+
+        Label(frame, text = <span class="s2">' Username '</span>).grid(row = <span class="s3">2</span>, column = <span class="s3">0</span>, sticky = W, padx=<span class="s3">10</span>, pady = <span class="s3">5</span>)
+        Label(frame, text = <span class="s2">'   '</span>).grid(row = <span class="s3">2</span>, column = <span class="s3">1</span>, sticky = W)
+        self.username = Entry(frame)
+        self.username.grid(row = <span class="s3">2</span>,column = <span class="s3">2 </span>, padx=<span class="s3">10</span>)
+
+        Label(frame, text = <span class="s2">' Password '</span>).grid(row = <span class="s3">5</span>, column = <span class="s3">0</span>, sticky = W , padx=<span class="s3">10</span>)
+        Label(frame, text = <span class="s2">'    '</span>).grid(row = <span class="s3">5</span>, column = <span class="s3">1</span>, sticky = W, pady = <span class="s3">5</span>)
+        self.password = Entry(frame, show=<span class="s2">'*'</span>)
+        self.password.grid(row = <span class="s3">5</span>, column = <span class="s3">2 </span>, padx=<span class="s3">10</span>)
+
+        <span class="s2">''''Login Button'''</span>
+        ttk.Button(frame, text = <span class="s2">'LOGIN'</span>,command = self.login_user).grid(row=<span class="s3">7</span>,column=<span class="s3">2 </span>, pady = <span class="s3">10</span>)
+
+        <span class="s2">'''Message Display'''</span>
+        self.message = Label(text = <span class="s2">''</span>,fg = <span class="s2">'Red'</span>)
+        self.message.grid(row=<span class="s3">9</span>,column=<span class="s3">5</span>)
+
+
+    <span class="s1">def </span>login_user(self):
+
+        <span class="s4">'''Check username and password entered are correct'''</span>
+        <span class="s1">if </span>self.username.get() == self.user <span class="s1">and </span>self.password.get() == self.passw:
+
+            <span class="s4"># Do the work done by the main of Windows_Version.py</span>
+
+            <span class="s4">#Destroy current window</span>
+            root.destroy()
+
+            <span class="s4">#Open new window</span>
+            create_database()
+            newroot = Tk()
+            newroot.title(<span class="s2">&quot;Inventory Tracking System&quot;</span>)
+            newroot.iconbitmap(<span class="s2">&quot;its_icon.ico&quot;</span>)
+
+            ob = Inventory(newroot)
+            newroot.mainloop()
+
+        <span class="s1">else</span>:
+
+            <span class="s2">'''Prompt user that either id or password is wrong'''</span>
+            self.message[<span class="s2">'text'</span>] = <span class="s2">'Username or Password incorrect. Try again!'</span>
+
+<span class="s1">if </span>__name__ == <span class="s2">'__main__'</span>:
+
+    root = Tk()
+    application = Authentication(root)
+    root.mainloop()
+</pre>
+</body>
+</html>

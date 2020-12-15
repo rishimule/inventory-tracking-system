@@ -1,0 +1,466 @@
+<html>
+<head>
+<title>Windows_Version.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #808080; font-style: italic;}
+.s1 { color: #000000;}
+.s2 { color: #008080; font-weight: bold;}
+.s3 { color: #000080; font-weight: bold;}
+.s4 { color: #0000ff;}
+</style>
+</head>
+<body bgcolor="#ffffff">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Windows_Version.py</font>
+</center></td></tr></table>
+<pre><span class="s0">#!/usr/bin/python</span>
+<span class="s0"># -*- coding: utf-8 -*-</span>
+
+__version__ = <span class="s2">&quot;0.1.0 for Windows 10&quot;</span>
+__author__  = <span class="s2">&quot;Rishi Mule, Shubham Mulik, Gaurav Gend, Vedant Padwal&quot;</span>
+__license__ = <span class="s2">'MIT'</span>
+
+<span class="s3">from </span>tkinter <span class="s3">import </span>*
+<span class="s3">from </span>tkinter <span class="s3">import </span>ttk
+<span class="s3">from </span>tkinter <span class="s3">import </span>messagebox
+<span class="s3">from </span>dbToCSV <span class="s3">import </span>toCSV
+<span class="s3">import </span>pymysql
+<span class="s3">import </span>sqlite3
+
+<span class="s3">def </span>create_database():
+    <span class="s0">&quot;&quot;&quot;Function to create a Database&quot;&quot;&quot;</span>
+    conn = sqlite3.connect(<span class="s2">'inventory.db'</span>)
+    cur = conn.cursor()
+    cur.execute(<span class="s2">&quot;CREATE TABLE IF NOT EXISTS dmce_inventory (product_id text PRIMARY KEY , product_type text , model_no text , manufacturer text , department text , location text ,incharge text, comment text)&quot;</span>)
+    conn.commit()
+    conn.close()
+
+<span class="s0">#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
+
+<span class="s3">class </span>Inventory():
+    <span class="s0">&quot;&quot;&quot;Creating a main window on Inventory&quot;&quot;&quot;</span>
+
+    <span class="s3">def </span>__init__(self, root):
+        <span class="s0">&quot;&quot;&quot;Default __INIT__ Function&quot;&quot;&quot;</span>
+
+        self.root=root
+        self.root.title(<span class="s2">&quot;I.T.S - For Datta Meghe College Of Engineering&quot;</span>)
+        self.root.geometry(<span class="s2">&quot;1200x660+160+80&quot;</span>)
+        self.root.resizable(<span class="s4">0</span>, <span class="s4">0</span>)
+
+        self.product_id_var = StringVar()
+        self.product_type_var = StringVar()
+        self.model_no_var = StringVar()
+        self.manufacturer_var = StringVar()
+        self.department_var = StringVar()
+        self.location_var = StringVar()
+        self.incharge_var = StringVar()
+
+        self.search_by_var = StringVar()
+        self.search_txt_var = StringVar()
+
+
+
+
+        head_title = Label(self.root,text=<span class="s2">&quot;Inventory Tracking System&quot;</span>,bd=<span class="s4">10</span>, relief=GROOVE, font=(<span class="s2">&quot;ariel&quot;</span>, <span class="s4">20 </span>, <span class="s2">&quot;bold&quot;</span>), bg=<span class="s2">&quot;RED&quot;</span>, fg=<span class="s2">&quot;white&quot;</span>)
+        head_title.pack(side=<span class="s2">&quot;top&quot;</span>, pady=<span class="s4">20</span>, padx=<span class="s4">10</span>, fill=X)
+
+        <span class="s0">#===================================================================================================================================</span>
+        <span class="s0">#===============================MANAGE_FRAME========================================================================================</span>
+        <span class="s0">#===================================================================================================================================</span>
+
+        Manage_Frame=Frame(self.root, bd=<span class="s4">5</span>, relief=RIDGE, bg=<span class="s2">&quot;crimson&quot;</span>)
+        Manage_Frame.place(x=<span class="s4">10</span>, y=<span class="s4">80</span>, width=<span class="s4">350</span>, height=<span class="s4">570</span>)
+
+        m_title=Label(Manage_Frame,text=<span class="s2">&quot;Manage Inventory&quot;</span>, font=(<span class="s2">&quot;&quot;</span>, <span class="s4">20 </span>, <span class="s2">&quot;bold&quot;</span>), bg=<span class="s2">&quot;crimson&quot;</span>, fg=<span class="s2">&quot;white&quot;</span>)
+        m_title.grid(row=<span class="s4">0</span>, columnspan=<span class="s4">2</span>, pady=<span class="s4">20</span>)
+
+        <span class="s0">#------------------------------------------------------------------------------------------------------------------------------------</span>
+
+        <span class="s3">def </span>caps(event):
+            <span class="s0">&quot;&quot;&quot;Function to Convert Text To UPPERCAP&quot;&quot;&quot;</span>
+            self.product_id_var.set(self.product_id_var.get().upper())
+            self.product_type_var.set(self.product_type_var.get().upper())
+            self.model_no_var.set(self.model_no_var.get().upper())
+            self.manufacturer_var.set(self.manufacturer_var.get().upper())
+            self.location_var.set(self.location_var.get().upper())
+            self.incharge_var.set(self.incharge_var.get().upper())
+            self.search_txt_var.set(self.search_txt_var.get().upper())
+
+        <span class="s0">#------------------------------------------------------------------------------------------------------------------------------------</span>
+
+        lbl_product_id=Label(Manage_Frame,text=<span class="s2">&quot;Product ID : &quot;</span>, font=(<span class="s2">&quot;&quot;</span>, <span class="s4">10 </span>, <span class="s2">&quot;bold&quot;</span>), bg=<span class="s2">&quot;crimson&quot;</span>, fg=<span class="s2">&quot;white&quot;</span>)
+        lbl_product_id.grid(row=<span class="s4">1</span>, column=<span class="s4">0</span>, padx=<span class="s4">10</span>, pady=<span class="s4">10</span>,sticky =<span class="s2">&quot;w&quot;</span>)
+
+        txt_product_id=Entry(Manage_Frame, font=(<span class="s2">&quot;times new roman&quot;</span>, <span class="s4">13 </span>, <span class="s2">&quot;bold&quot;</span>) ,bd=<span class="s4">2</span>, relief=GROOVE, textvariable=self.product_id_var)
+        txt_product_id.bind(<span class="s2">&quot;&lt;KeyRelease&gt;&quot;</span>, caps)
+        txt_product_id.grid(row=<span class="s4">1</span>, column=<span class="s4">1</span>, padx=<span class="s4">10</span>, pady=<span class="s4">10</span>, sticky =<span class="s2">&quot;w&quot;</span>)
+
+        <span class="s0">#------------------------------------------------------------------------------------------------------------------------------------</span>
+
+        lbl_type=Label(Manage_Frame,text=<span class="s2">&quot;Product Type : &quot;</span>, font=(<span class="s2">&quot;&quot;</span>, <span class="s4">10 </span>, <span class="s2">&quot;bold&quot;</span>), bg=<span class="s2">&quot;crimson&quot;</span>, fg=<span class="s2">&quot;white&quot;</span>)
+        lbl_type.grid(row=<span class="s4">2</span>, column=<span class="s4">0</span>, padx=<span class="s4">10</span>, pady=<span class="s4">10</span>,sticky =<span class="s2">&quot;w&quot;</span>)
+
+        txt_type=Entry(Manage_Frame, font=(<span class="s2">&quot;times new roman&quot;</span>, <span class="s4">13 </span>, <span class="s2">&quot;bold&quot;</span>) ,bd=<span class="s4">2</span>, relief=GROOVE, textvariable=self.product_type_var)
+        txt_type.bind(<span class="s2">&quot;&lt;KeyRelease&gt;&quot;</span>, caps)
+        txt_type.grid(row=<span class="s4">2</span>, column=<span class="s4">1</span>, padx=<span class="s4">10</span>, pady=<span class="s4">10</span>, sticky =<span class="s2">&quot;w&quot;</span>)
+
+        <span class="s0">#------------------------------------------------------------------------------------------------------------------------------------</span>
+
+        lbl_model_no=Label(Manage_Frame,text=<span class="s2">&quot;Model No : &quot;</span>, font=(<span class="s2">&quot;&quot;</span>, <span class="s4">10 </span>, <span class="s2">&quot;bold&quot;</span>), bg=<span class="s2">&quot;crimson&quot;</span>, fg=<span class="s2">&quot;white&quot;</span>)
+        lbl_model_no.grid(row=<span class="s4">3</span>, column=<span class="s4">0</span>, padx=<span class="s4">10</span>, pady=<span class="s4">10</span>,sticky =<span class="s2">&quot;w&quot;</span>)
+
+        txt_model_id=Entry(Manage_Frame, font=(<span class="s2">&quot;times new roman&quot;</span>, <span class="s4">13 </span>, <span class="s2">&quot;bold&quot;</span>) ,bd=<span class="s4">2</span>, relief=GROOVE, textvariable=self.model_no_var)
+        txt_model_id.bind(<span class="s2">&quot;&lt;KeyRelease&gt;&quot;</span>, caps)
+        txt_model_id.grid(row=<span class="s4">3</span>, column=<span class="s4">1</span>, padx=<span class="s4">10</span>, pady=<span class="s4">10</span>, sticky =<span class="s2">&quot;w&quot;</span>)
+
+        <span class="s0">#------------------------------------------------------------------------------------------------------------------------------------</span>
+
+        lbl_manufacturer=Label(Manage_Frame,text=<span class="s2">&quot;Manufacturer : &quot;</span>, font=(<span class="s2">&quot;&quot;</span>, <span class="s4">10 </span>, <span class="s2">&quot;bold&quot;</span>), bg=<span class="s2">&quot;crimson&quot;</span>, fg=<span class="s2">&quot;white&quot;</span>)
+        lbl_manufacturer.grid(row=<span class="s4">4</span>, column=<span class="s4">0</span>, padx=<span class="s4">10</span>, pady=<span class="s4">10</span>,sticky =<span class="s2">&quot;w&quot;</span>)
+
+        txt_manufacturer=Entry(Manage_Frame, font=(<span class="s2">&quot;times new roman&quot;</span>, <span class="s4">13 </span>, <span class="s2">&quot;bold&quot;</span>) ,bd=<span class="s4">2</span>, relief=GROOVE, textvariable=self.manufacturer_var)
+        txt_manufacturer.bind(<span class="s2">&quot;&lt;KeyRelease&gt;&quot;</span>, caps)
+        txt_manufacturer.grid(row=<span class="s4">4</span>, column=<span class="s4">1</span>, padx=<span class="s4">10</span>, pady=<span class="s4">10</span>, sticky =<span class="s2">&quot;w&quot;</span>)
+
+        <span class="s0">#------------------------------------------------------------------------------------------------------------------------------------</span>
+
+        lbl_department=Label(Manage_Frame,text=<span class="s2">&quot;Department : &quot;</span>, font=(<span class="s2">&quot;&quot;</span>, <span class="s4">10 </span>, <span class="s2">&quot;bold&quot;</span>), bg=<span class="s2">&quot;crimson&quot;</span>, fg=<span class="s2">&quot;white&quot;</span>)
+        lbl_department.grid(row=<span class="s4">5</span>, column=<span class="s4">0</span>, padx=<span class="s4">10</span>, pady=<span class="s4">10</span>,sticky =<span class="s2">&quot;w&quot;</span>)
+
+        combo_department=ttk.Combobox(Manage_Frame, width=<span class="s4">18</span>, font=(<span class="s2">&quot;&quot;</span>, <span class="s4">13</span>, <span class="s2">&quot;bold&quot; </span>), state=<span class="s2">&quot;readonly&quot; </span>, textvariable=self.department_var)
+        combo_department[<span class="s2">&quot;values&quot;</span>]=(<span class="s2">&quot;COMPUTER&quot;</span>,<span class="s2">&quot;ELECTRICAL&quot;</span>,<span class="s2">&quot;CIVIL&quot;</span>,<span class="s2">&quot;MECHANICAL&quot;</span>,<span class="s2">&quot;CHEMICAL&quot;</span>,<span class="s2">&quot;I.T.&quot;</span>)
+        combo_department.current(<span class="s4">0</span>)
+        combo_department.grid(row=<span class="s4">5</span>, column=<span class="s4">1</span>, padx=<span class="s4">10</span>, pady=<span class="s4">10</span>,sticky =<span class="s2">&quot;w&quot;</span>)
+
+        <span class="s0">#------------------------------------------------------------------------------------------------------------------------------------</span>
+
+        lbl_location=Label(Manage_Frame,text=<span class="s2">&quot;Location : &quot;</span>, font=(<span class="s2">&quot;&quot;</span>, <span class="s4">10 </span>, <span class="s2">&quot;bold&quot;</span>), bg=<span class="s2">&quot;crimson&quot;</span>, fg=<span class="s2">&quot;white&quot;</span>)
+        lbl_location.grid(row=<span class="s4">6</span>, column=<span class="s4">0</span>, padx=<span class="s4">10</span>, pady=<span class="s4">10</span>,sticky =<span class="s2">&quot;w&quot;</span>)
+
+        txt_location=Entry(Manage_Frame, font=(<span class="s2">&quot;times new roman&quot;</span>, <span class="s4">13 </span>, <span class="s2">&quot;bold&quot;</span>) ,bd=<span class="s4">2</span>, relief=GROOVE, textvariable=self.location_var)
+        txt_location.bind(<span class="s2">&quot;&lt;KeyRelease&gt;&quot;</span>, caps)
+        txt_location.grid(row=<span class="s4">6</span>, column=<span class="s4">1</span>, padx=<span class="s4">10</span>, pady=<span class="s4">10</span>, sticky =<span class="s2">&quot;w&quot;</span>)
+
+        <span class="s0">#------------------------------------------------------------------------------------------------------------------------------------</span>
+
+        lbl_incharge=Label(Manage_Frame,text=<span class="s2">&quot;Incharge : &quot;</span>, font=(<span class="s2">&quot;&quot;</span>, <span class="s4">10 </span>, <span class="s2">&quot;bold&quot;</span>), bg=<span class="s2">&quot;crimson&quot;</span>, fg=<span class="s2">&quot;white&quot;</span>)
+        lbl_incharge.grid(row=<span class="s4">7</span>, column=<span class="s4">0</span>, padx=<span class="s4">10</span>, pady=<span class="s4">10</span>,sticky =<span class="s2">&quot;w&quot;</span>)
+
+        txt_incharge=Entry(Manage_Frame, font=(<span class="s2">&quot;times new roman&quot;</span>, <span class="s4">13 </span>, <span class="s2">&quot;bold&quot;</span>) ,bd=<span class="s4">2</span>, relief=GROOVE, textvariable=self.incharge_var)
+        txt_incharge.bind(<span class="s2">&quot;&lt;KeyRelease&gt;&quot;</span>, caps)
+        txt_incharge.grid(row=<span class="s4">7</span>, column=<span class="s4">1</span>, padx=<span class="s4">10</span>, pady=<span class="s4">10</span>, sticky =<span class="s2">&quot;w&quot;</span>)
+
+        <span class="s0">#------------------------------------------------------------------------------------------------------------------------------------</span>
+
+        lbl_comment=Label(Manage_Frame,text=<span class="s2">&quot;Comment : &quot;</span>, font=(<span class="s2">&quot;&quot;</span>, <span class="s4">10 </span>, <span class="s2">&quot;bold&quot;</span>), bg=<span class="s2">&quot;crimson&quot;</span>, fg=<span class="s2">&quot;white&quot;</span>)
+        lbl_comment.grid(row=<span class="s4">8</span>, column=<span class="s4">0</span>, padx=<span class="s4">10</span>, pady=<span class="s4">10</span>,sticky =<span class="s2">&quot;w&quot;</span>)
+
+        self.txt_comment=Text(Manage_Frame, width=<span class="s4">20</span>, height=<span class="s4">3</span>, bd=<span class="s4">2</span>, relief=GROOVE, font=(<span class="s2">&quot;times new roman&quot;</span>, <span class="s4">13 </span>, <span class="s2">&quot;&quot;</span>))
+        self.txt_comment.grid(row=<span class="s4">8</span>, column=<span class="s4">1</span>, padx=<span class="s4">10</span>, pady=<span class="s4">10</span>, sticky =<span class="s2">&quot;w&quot;</span>)
+
+        <span class="s0">#------------------------------------------------------------------------------------------------------------------------------------</span>
+
+
+
+
+        <span class="s0">#===================================================================================================================================</span>
+        <span class="s0">#==========================BUTTON_FRAME=============================================================================================</span>
+        <span class="s0">#===================================================================================================================================</span>
+
+        Button_Frame=Frame(Manage_Frame, bd=<span class="s4">4</span>, relief=RIDGE, bg=<span class="s2">&quot;yellow&quot;</span>)
+        Button_Frame.place(x=<span class="s4">5</span>, y=<span class="s4">500</span>, width=<span class="s4">330</span>, height=<span class="s4">50</span>)
+
+        <span class="s0">#------------------------------------------------------------------------------------------------------------------------------------</span>
+        add_button=Button(Button_Frame, text=<span class="s2">&quot;Add&quot;</span>, width=<span class="s4">8</span>, highlightbackground=<span class="s2">&quot;yellow&quot;</span>, command=self.add_items)
+        add_button.grid(row=<span class="s4">0</span>, column=<span class="s4">0</span>, padx=<span class="s4">5</span>, pady=<span class="s4">7</span>)
+
+        <span class="s0">#------------------------------------------------------------------------------------------------------------------------------------</span>
+        update_button=Button(Button_Frame, text=<span class="s2">&quot;Update&quot;</span>, width=<span class="s4">8</span>, highlightbackground=<span class="s2">&quot;yellow&quot;</span>, command=self.update_data)
+        update_button.grid(row=<span class="s4">0</span>, column=<span class="s4">1</span>, padx=<span class="s4">5</span>, pady=<span class="s4">7</span>)
+
+        <span class="s0">#------------------------------------------------------------------------------------------------------------------------------------</span>
+        delete_button=Button(Button_Frame, text=<span class="s2">&quot;Delete&quot;</span>, width=<span class="s4">8</span>, highlightbackground=<span class="s2">&quot;yellow&quot;</span>, command=self.delete_data)
+        delete_button.grid(row=<span class="s4">0</span>, column=<span class="s4">2</span>, padx=<span class="s4">5</span>, pady=<span class="s4">7</span>)
+
+        <span class="s0">#------------------------------------------------------------------------------------------------------------------------------------</span>
+        clear_button=Button(Button_Frame, text=<span class="s2">&quot;Clear&quot;</span>, width=<span class="s4">10</span>, highlightbackground=<span class="s2">&quot;yellow&quot;</span>, command=self.clear)
+        clear_button.grid(row=<span class="s4">0</span>, column=<span class="s4">3</span>, padx=<span class="s4">5</span>, pady=<span class="s4">7</span>)
+
+
+
+        <span class="s0">#===================================================================================================================================</span>
+        <span class="s0">#==========================DETAIL_FRAME=============================================================================================</span>
+        <span class="s0">#===================================================================================================================================</span>
+
+        Detail_Frame=Frame(self.root, bd=<span class="s4">4</span>, relief=RIDGE, bg=<span class="s2">&quot;crimson&quot;</span>)
+        Detail_Frame.place(x=<span class="s4">370</span>, y=<span class="s4">80</span>, width=<span class="s4">820</span>, height=<span class="s4">570</span>)
+
+
+        <span class="s0">#===================================================================================================================================</span>
+        <span class="s0">#==========================SEARCH_FRAME=============================================================================================</span>
+        <span class="s0">#===================================================================================================================================</span>
+
+        Search_Frame=Frame(Detail_Frame, bd=<span class="s4">4</span>, relief=RIDGE, bg=<span class="s2">&quot;yellow&quot;</span>)
+        Search_Frame.place(x=<span class="s4">10</span>, y=<span class="s4">10</span>, width=<span class="s4">792</span>, height=<span class="s4">60</span>)
+
+        lbl_search=Label(Search_Frame,text=<span class="s2">&quot;Search By : &quot;</span>, font=(<span class="s2">&quot;&quot;</span>, <span class="s4">13 </span>, <span class="s2">&quot;bold&quot;</span>), bg=<span class="s2">&quot;yellow&quot;</span>, fg=<span class="s2">&quot;red&quot;</span>)
+        lbl_search.grid(row=<span class="s4">0</span>, column=<span class="s4">0</span>, padx=<span class="s4">10</span>, pady=<span class="s4">10</span>,sticky =<span class="s2">&quot;w&quot;</span>)
+
+        combo_search_by=ttk.Combobox(Search_Frame, width=<span class="s4">13</span>, font=(<span class="s2">&quot;&quot;</span>, <span class="s4">13</span>, <span class="s2">&quot;&quot; </span>), state=<span class="s2">&quot;readonly&quot;</span>, textvariable=self.search_by_var)
+        combo_search_by[<span class="s2">&quot;values&quot;</span>]=(<span class="s2">&quot;All&quot;</span>,<span class="s2">&quot;Product ID.&quot;</span>,<span class="s2">&quot;Product Type&quot;</span>,<span class="s2">&quot;Model No&quot;</span>,<span class="s2">&quot;Manufacturer&quot;</span>,<span class="s2">&quot;Department&quot;</span>,<span class="s2">&quot;Location&quot;</span>,<span class="s2">&quot;Incharge&quot;</span>)
+        combo_search_by.current(<span class="s4">0</span>)
+        combo_search_by.grid(row=<span class="s4">0</span>, column=<span class="s4">1</span>, padx=<span class="s4">2</span>, pady=<span class="s4">10</span>,sticky =<span class="s2">&quot;w&quot;</span>)
+
+
+
+        txt_search=Entry(Search_Frame, width=<span class="s4">22</span>,font=(<span class="s2">&quot;times new roman&quot;</span>, <span class="s4">15 </span>) ,bd=<span class="s4">2</span>, relief=GROOVE, textvariable=self.search_txt_var)
+        txt_search.bind(<span class="s2">&quot;&lt;KeyRelease&gt;&quot;</span>, caps)
+        txt_search.grid(row=<span class="s4">0</span>, column=<span class="s4">2</span>, padx=<span class="s4">20</span>, pady=<span class="s4">10</span>, sticky =<span class="s2">&quot;w&quot;</span>)
+
+        search_button=Button(Search_Frame, text=<span class="s2">&quot;Search&quot;</span>, width=<span class="s4">8</span>, highlightbackground=<span class="s2">&quot;yellow&quot;</span>, command=self.search_data)
+        search_button.grid(row=<span class="s4">0</span>, column=<span class="s4">3</span>, padx=<span class="s4">4</span>, pady=<span class="s4">5</span>)
+
+        view_button=Button(Search_Frame, text=<span class="s2">&quot;View All&quot;</span>, width=<span class="s4">8</span>, highlightbackground=<span class="s2">&quot;yellow&quot;</span>, command=self.view_data)
+        view_button.grid(row=<span class="s4">0</span>, column=<span class="s4">4</span>, padx=<span class="s4">9</span>, pady=<span class="s4">5</span>)
+
+        tocsv_button=Button(Search_Frame, text=<span class="s2">&quot;Export&quot;</span>, width=<span class="s4">8</span>, highlightbackground=<span class="s2">&quot;yellow&quot;</span>, command=toCSV)
+        tocsv_button.grid(row=<span class="s4">0</span>, column=<span class="s4">5</span>, padx=<span class="s4">9</span>, pady=<span class="s4">5</span>)
+
+        <span class="s0">#===================================================================================================================================</span>
+        <span class="s0">#==========================TABLE_FRAME=============================================================================================</span>
+        <span class="s0">#===================================================================================================================================</span>
+
+        Table_Frame=Frame(Detail_Frame, bd=<span class="s4">4</span>, relief=RIDGE, bg=<span class="s2">&quot;yellow&quot;</span>)
+        Table_Frame.place(x=<span class="s4">10</span>, y=<span class="s4">80</span>, width=<span class="s4">792</span>, height=<span class="s4">472</span>)
+
+        scroll_x=Scrollbar(Table_Frame, orient=HORIZONTAL)
+        scroll_y=Scrollbar(Table_Frame, orient=VERTICAL)
+        self.View_Table=ttk.Treeview(Table_Frame, columns=(<span class="s2">&quot;pid&quot;</span>,<span class="s2">&quot;ptype&quot;</span>,<span class="s2">&quot;mno&quot;</span>,<span class="s2">&quot;manufacturer&quot;</span>,<span class="s2">&quot;department&quot;</span>,<span class="s2">&quot;location&quot;</span>,<span class="s2">&quot;incharge&quot;</span>,<span class="s2">&quot;comment&quot;</span>), xscrollcommand=scroll_x.set, yscrollcommand=scroll_y.set)
+        scroll_x.pack(side=BOTTOM, fill=X)
+        scroll_y.pack(side=RIGHT, fill=Y)
+        scroll_x.config(command=self.View_Table.xview)
+        scroll_y.config(command=self.View_Table.yview)
+
+        self.View_Table.heading(<span class="s2">&quot;pid&quot;</span>, text=<span class="s2">&quot;Product ID.&quot;</span>)
+        self.View_Table.heading(<span class="s2">&quot;ptype&quot;</span>, text=<span class="s2">&quot;Product Type&quot;</span>)
+        self.View_Table.heading(<span class="s2">&quot;mno&quot;</span>, text=<span class="s2">&quot;Model No&quot;</span>)
+        self.View_Table.heading(<span class="s2">&quot;manufacturer&quot;</span>, text=<span class="s2">&quot;Manufacturer&quot;</span>)
+        self.View_Table.heading(<span class="s2">&quot;department&quot;</span>, text=<span class="s2">&quot;Department&quot;</span>)
+        self.View_Table.heading(<span class="s2">&quot;location&quot;</span>, text=<span class="s2">&quot;Location&quot;</span>)
+        self.View_Table.heading(<span class="s2">&quot;incharge&quot;</span>, text=<span class="s2">&quot;Incharge&quot;</span>)
+        self.View_Table.heading(<span class="s2">&quot;comment&quot;</span>, text=<span class="s2">&quot;Comment&quot;</span>)
+
+        self.View_Table.column(<span class="s2">&quot;pid&quot;</span>, width=<span class="s4">90</span>)
+        self.View_Table.column(<span class="s2">&quot;ptype&quot;</span>, width=<span class="s4">100</span>)
+        self.View_Table.column(<span class="s2">&quot;mno&quot;</span>, width=<span class="s4">120</span>)
+        self.View_Table.column(<span class="s2">&quot;manufacturer&quot;</span>, width=<span class="s4">90</span>)
+        self.View_Table.column(<span class="s2">&quot;department&quot;</span>, width=<span class="s4">120</span>)
+        self.View_Table.column(<span class="s2">&quot;location&quot;</span>, width=<span class="s4">90</span>)
+        self.View_Table.column(<span class="s2">&quot;incharge&quot;</span>, width=<span class="s4">130</span>)
+        self.View_Table.column(<span class="s2">&quot;comment&quot;</span>, width=<span class="s4">250</span>)
+
+
+        self.View_Table[<span class="s2">&quot;show&quot;</span>]=<span class="s2">&quot;headings&quot;</span>
+        self.View_Table.pack(fill=BOTH, expand=<span class="s4">1</span>)
+        self.View_Table.bind(<span class="s2">&quot;&lt;ButtonRelease-1&gt;&quot;</span>, self.get_cursor)
+
+
+        self.view_data()
+
+<span class="s0">#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
+
+    <span class="s3">def </span>add_items(self):
+        <span class="s0">&quot;&quot;&quot;Function to ADD item to Database&quot;&quot;&quot;</span>
+
+        <span class="s3">if </span>self.product_id_var.get()==<span class="s2">&quot;&quot;</span>:
+            messagebox.showerror(<span class="s2">&quot;Error&quot;</span>,<span class="s2">&quot;Product ID. cannot be blank!!!&quot;</span>)
+
+        <span class="s3">else</span>:
+            <span class="s3">try</span>:
+                con=sqlite3.connect(<span class="s2">'inventory.db'</span>)
+                cur=con.cursor()
+                cur.execute(<span class="s2">&quot; insert into dmce_inventory values (?,?,?,?,?,?,?,?)&quot;</span>,(
+                                                                                            self.product_id_var.get(),
+                                                                                            self.product_type_var.get(),
+                                                                                            self.model_no_var.get(),
+                                                                                            self.manufacturer_var.get(),
+                                                                                            self.department_var.get(),
+                                                                                            self.location_var.get(),
+                                                                                            self.incharge_var.get(),
+                                                                                            self.txt_comment.get(<span class="s2">'1.0'</span>,END),
+                                                                                          ))
+
+
+                con.commit()
+                self.view_data()
+                con.close()
+
+            <span class="s3">except</span>:
+                <span class="s3">pass</span>
+
+            <span class="s3">else</span>:
+                self.clear()
+
+<span class="s0">#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
+
+    <span class="s3">def </span>view_data(self):
+        <span class="s0">&quot;&quot;&quot;Function to VIEW data into Table&quot;&quot;&quot;</span>
+
+        self.search_txt_var.set(<span class="s2">&quot;&quot;</span>)
+        con=sqlite3.connect(<span class="s2">'inventory.db'</span>)
+        cur=con.cursor()
+        cur.execute(<span class="s2">&quot;select * from dmce_inventory&quot;</span>)
+        rows=cur.fetchall()
+        self.View_Table.delete(*self.View_Table.get_children())
+        <span class="s3">if </span>len(rows)!=<span class="s4">0</span>:
+            <span class="s3">for </span>row <span class="s3">in </span>rows:
+                self.View_Table.insert(<span class="s2">&quot;&quot;</span>, END, values=row)
+            con.commit()
+        con.close()
+
+<span class="s0">#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
+
+    <span class="s3">def </span>clear(self):
+        <span class="s0">&quot;&quot;&quot;Function to CLEAR all Input Fields&quot;&quot;&quot;</span>
+
+        self.product_id_var.set(<span class="s2">&quot;&quot;</span>)
+        self.product_type_var.set(<span class="s2">&quot;&quot;</span>)
+        self.model_no_var.set(<span class="s2">&quot;&quot;</span>)
+        self.manufacturer_var.set(<span class="s2">&quot;&quot;</span>)
+        self.location_var.set(<span class="s2">&quot;&quot;</span>)
+        self.incharge_var.set(<span class="s2">&quot;&quot;</span>)
+        self.txt_comment.delete(<span class="s2">&quot;1.0&quot;</span>, END)
+
+<span class="s0">#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
+
+    <span class="s3">def </span>get_cursor(self,event):
+        <span class="s0">&quot;&quot;&quot;Function to SELECT a particular item&quot;&quot;&quot;</span>
+
+        <span class="s3">try</span>:
+            cursor_row=self.View_Table.focus()
+            contents=self.View_Table.item(cursor_row)
+            row=contents[<span class="s2">&quot;values&quot;</span>]
+
+            self.product_id_var.set(row[<span class="s4">0</span>])
+            self.product_type_var.set(row[<span class="s4">1</span>])
+            self.model_no_var.set(row[<span class="s4">2</span>])
+            self.manufacturer_var.set(row[<span class="s4">3</span>])
+            self.department_var.set(row[<span class="s4">4</span>])
+            self.location_var.set(row[<span class="s4">5</span>])
+            self.incharge_var.set(row[<span class="s4">6</span>])
+            self.txt_comment.delete(<span class="s2">&quot;1.0&quot;</span>, END)
+            self.txt_comment.insert(END, row[<span class="s4">7</span>])
+
+        <span class="s3">except</span>:
+            <span class="s3">pass</span>
+
+<span class="s0">#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
+
+    <span class="s3">def </span>update_data(self):
+        <span class="s0">&quot;&quot;&quot;Function to UPDATE an item of Database&quot;&quot;&quot;</span>
+
+        con=sqlite3.connect(<span class="s2">'inventory.db'</span>)
+        cur=con.cursor()
+        cur.execute(<span class="s2">&quot;update dmce_inventory set  product_type=? , model_no=? , manufacturer=? , department=? , location=? ,incharge=?, comment=? where product_id=?&quot;</span>,(
+                                                                                                                                                                        self.product_type_var.get(),
+                                                                                                                                                                        self.model_no_var.get(),
+                                                                                                                                                                        self.manufacturer_var.get(),
+                                                                                                                                                                        self.department_var.get(),
+                                                                                                                                                                        self.location_var.get(),
+                                                                                                                                                                        self.incharge_var.get(),
+                                                                                                                                                                        self.txt_comment.get(<span class="s2">'1.0'</span>,END),
+                                                                                                                                                                        self.product_id_var.get()
+                                                                                                                                                                     ))
+        con.commit()
+        self.view_data()
+        self.clear()
+        con.close()
+
+<span class="s0">#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
+
+    <span class="s3">def </span>delete_data(self):
+        <span class="s0">&quot;&quot;&quot;Function to DELETE an item from the Database&quot;&quot;&quot;</span>
+
+        con=sqlite3.connect(<span class="s2">'inventory.db'</span>)
+        cur=con.cursor()
+        cur.execute(<span class="s2">&quot;delete from dmce_inventory where product_id=?&quot;</span>,(self.product_id_var.get(),))
+        con.commit()
+        self.view_data()
+        self.clear()
+        con.close()
+
+<span class="s0">#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
+
+    <span class="s3">def </span>search_data(self):
+        <span class="s0">&quot;&quot;&quot;Function to Search for items in Database&quot;&quot;&quot;</span>
+
+        con=sqlite3.connect(<span class="s2">'inventory.db'</span>)
+        cur=con.cursor()
+
+        <span class="s3">if </span>self.search_by_var.get()==<span class="s2">&quot;Product ID.&quot;</span>:
+            cur.execute(<span class="s2">&quot;select * from dmce_inventory where product_id=?&quot;</span>, ( self.search_txt_var.get(),))
+            rows=cur.fetchall()
+
+        <span class="s3">elif </span>self.search_by_var.get()==<span class="s2">&quot;Product Type&quot;</span>:
+            cur.execute(<span class="s2">&quot;select * from dmce_inventory where product_type=?&quot;</span>, ( self.search_txt_var.get(),))
+            rows=cur.fetchall()
+
+        <span class="s3">elif </span>self.search_by_var.get()==<span class="s2">&quot;Model No&quot;</span>:
+            cur.execute(<span class="s2">&quot;select * from dmce_inventory where model_no=?&quot;</span>, ( self.search_txt_var.get(),))
+            rows=cur.fetchall()
+
+        <span class="s3">elif </span>self.search_by_var.get()==<span class="s2">&quot;Manufacturer&quot;</span>:
+            cur.execute(<span class="s2">&quot;select * from dmce_inventory where manufacturer=?&quot;</span>, ( self.search_txt_var.get(),))
+            rows=cur.fetchall()
+
+        <span class="s3">elif </span>self.search_by_var.get()==<span class="s2">&quot;Department&quot;</span>:
+            cur.execute(<span class="s2">&quot;select * from dmce_inventory where department=?&quot;</span>, ( self.search_txt_var.get(),))
+            rows=cur.fetchall()
+
+        <span class="s3">elif </span>self.search_by_var.get()==<span class="s2">&quot;Location&quot;</span>:
+            cur.execute(<span class="s2">&quot;select * from dmce_inventory where location=?&quot;</span>, ( self.search_txt_var.get(),))
+            rows=cur.fetchall()
+
+        <span class="s3">elif </span>self.search_by_var.get()==<span class="s2">&quot;Incharge&quot;</span>:
+            cur.execute(<span class="s2">&quot;select * from dmce_inventory where incharge=?&quot;</span>, ( self.search_txt_var.get(),))
+            rows=cur.fetchall()
+
+        <span class="s3">else</span>:
+            cur.execute(<span class="s2">&quot;select * from dmce_inventory where product_id=? OR product_type=? OR model_no=? OR manufacturer=? OR department=? OR location=? OR incharge=?&quot;</span>, (
+                                                                                                                                                                            self.search_txt_var.get(),
+                                                                                                                                                                            self.search_txt_var.get(),
+                                                                                                                                                                            self.search_txt_var.get(),
+                                                                                                                                                                            self.search_txt_var.get(),
+                                                                                                                                                                            self.search_txt_var.get(),
+                                                                                                                                                                            self.search_txt_var.get(),
+                                                                                                                                                                            self.search_txt_var.get(),
+                                                                                                                                                                         ))
+            rows=cur.fetchall()
+
+
+        self.View_Table.delete(*self.View_Table.get_children())
+        <span class="s3">if </span>len(rows)!=<span class="s4">0</span>:
+            <span class="s3">for </span>row <span class="s3">in </span>rows:
+                self.View_Table.insert(<span class="s2">&quot;&quot;</span>, END, values=row)
+            con.commit()
+        con.close()
+
+<span class="s0">#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
+
+
+<span class="s3">if </span>__name__ == <span class="s2">'__main__'</span>:
+    <span class="s2">&quot;&quot;&quot;START THE PROGRAM&quot;&quot;&quot;</span>
+
+    create_database()
+    root = Tk()
+    root.title(<span class="s2">&quot;Inventory Tracking System&quot;</span>)
+    root.iconbitmap(<span class="s2">&quot;its_icon.ico&quot;</span>)
+    ob = Inventory(root)
+    root.mainloop()
+</pre>
+</body>
+</html>

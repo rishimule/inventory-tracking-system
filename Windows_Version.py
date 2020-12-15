@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-__version__ = "0.1.0 for Windows 10"
+__version__ = "0.1.1 for Windows 10"
 __author__  = "Rishi Mule, Shubham Mulik, Gaurav Gend, Vedant Padwal"
 __license__ = 'MIT'
 
@@ -9,6 +9,7 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 from dbToCSV import toCSV
+from csvToPdf import CsvtoPDF
 import pymysql
 import sqlite3
 
@@ -209,7 +210,7 @@ class Inventory():
         view_button=Button(Search_Frame, text="View All", width=8, highlightbackground="yellow", command=self.view_data)
         view_button.grid(row=0, column=4, padx=9, pady=5)
 
-        tocsv_button=Button(Search_Frame, text="Export", width=8, highlightbackground="yellow", command=toCSV)
+        tocsv_button=Button(Search_Frame, text="Export", width=8, highlightbackground="yellow", command=self.export_data)
         tocsv_button.grid(row=0, column=5, padx=9, pady=5)
 
         #===================================================================================================================================
@@ -286,6 +287,16 @@ class Inventory():
 
             else:
                 self.clear()
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    def export_data(self):
+        """Function to Expoet data into various Formats"""
+        toCSV()
+        CsvtoPDF()
+
+
+
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
