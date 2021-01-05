@@ -1,7 +1,7 @@
 
 from tkinter import *
 from tkinter import ttk
-import  tkinter.messagebox
+import tkinter.messagebox
 from Windows_Version import *
 from tkinter import messagebox
 
