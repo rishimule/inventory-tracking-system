@@ -1,6 +1,21 @@
 import csv
 from fpdf import FPDF
 from tkinter import messagebox
+from tkinter import filedialog
+
+
+def makecsv():
+    """"Export to database.csv"""
+    try:
+        conn = sqlite3.connect('inventory.db', isolation_level=None, detect_types=sqlite3.PARSE_COLNAMES)
+        db_df = pd.read_sql_query("SELECT * FROM dmce_inventory", conn)
+
+        # file_name = filedialog.asksaveasfilename(defaultextension=".csv", filetypes=(("csv file", "*.csv"),("All Files", "*.*") ))
+
+        db_df.to_csv('database.csv', index=False)
+    except:
+        pass
+
 
 class PDF(FPDF):
     """Customizing the fpdf Options"""
@@ -16,9 +31,12 @@ class PDF(FPDF):
 
 def CsvtoPDF():
     """Function To export CSV to PDF"""
-
+    makecsv()
     try:
         # To count the no of Columns (ncol)
+
+        filename = filedialog.asksaveasfilename(defaultextension=".pdf", filetypes=(("pdf file", "*.pdf"),("All Files", "*.*") ))
+
         with open('database.csv',"r") as file:
             reader = csv.reader(file,delimiter = ",")
             ncol = len(next(reader))
@@ -62,9 +80,9 @@ def CsvtoPDF():
             pdf.set_font('Times','',10.0)
             pdf.cell(page_width, 0.0, '- end of report -', align='C')
 
-            pdf.output('Database.pdf', 'F')
+            pdf.output(filename, 'F')
 
-        messagebox.showinfo("Success","Data Successfully Exported to 'Database.pdf' !!!")
+        messagebox.showinfo("Success",f"Data Successfully Exported to '{filename}' !!!")
 
     except:
         messagebox.showerror("Error","Close other programs and try again.")

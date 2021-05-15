@@ -10,6 +10,7 @@ from tkinter import ttk
 from tkinter import messagebox
 from dbToCSV import toCSV
 from csvToPdf import CsvtoPDF
+from dialog import OptionDialog
 import pymysql
 import sqlite3
 
@@ -292,8 +293,18 @@ class Inventory():
 
     def export_data(self):
         """Function to Expoet data into various Formats"""
-        toCSV()
-        CsvtoPDF()
+        que1 = messagebox.askquestion( "Export",
+                                "Do you want to export to CSV?",
+                                icon ='info')
+        if que1 == 'yes':
+            toCSV()
+
+        que2 = messagebox.askquestion( "Export",
+                                        "Do you want to export to PDF?",
+                                        icon ='info')
+
+        if que2 == 'yes':
+            CsvtoPDF()
 
 
 
